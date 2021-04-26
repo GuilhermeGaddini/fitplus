@@ -2,23 +2,27 @@ import React from 'react';
 import { NavigationContainer, DarkTheme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { Icon } from "react-native-vector-icons/MaterialCommunityIcons";
+import { Title } from 'react-native-paper';
 
 //Screens
 import Login from "./App/Screens/Login";
 import Home from "./App/Screens/Home";
 import SignUp from "./App/Screens/SignUp";
 import Profile from "./App/Screens/Profile";
+import NewTrain from "./App/Screens/NewTrain";
 import Imc from "./App/Screens/Imc";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const MaterialBottomTabs = createMaterialBottomTabNavigator();
+const BottomTab = createBottomTabNavigator();
 
 export default function App() {
 
-  //colocar um dark mode no app; falta um arquivo style "claro"
+  //colocar um dark mode no app; falta um arquivo style que seja "claro"
   const MyTheme = {
     dark: false,
     colors: {
@@ -30,24 +34,57 @@ export default function App() {
     },
   }
 
-  createStack = () =>
+  homeStack = () =>
     <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
+      {/* <Stack.Screen name="loginStack" component={this.loginStack} 
+      options={{
+        headerShown:false
+      }} /> */}
       <Stack.Screen 
         name="Home" 
         children={this.homeDrawer}/>
-      {/* <Stack.Screen name="BottomTabs" component={this.BottomTabs} /> */}
-      <Stack.Screen name="SignUp" component={SignUp} />
-    </Stack.Navigator>
+  </Stack.Navigator>
+  
+  loginStack = () =>
+    <Stack.Navigator>
+      <Stack.Screen name="Login" component={Login} 
+      options={{
+        title: "LoginScreen"
+      }} />
+      <Stack.Screen name="SignUp" component={SignUp} 
+      options={{
+        title: "SignUpScreen"
+      }} />
+      <Stack.Screen name="Home" component={this.bottomTab}
+      options={{
+        headerShown:false
+      }} />
+      {/* <Stack.Screen name="Login with Google" component={ApiGoogle} /> */}
+  </Stack.Navigator>
 
   homeDrawer = () =>
-    <Drawer.Navigator>
+    <Drawer.Navigator
+    options={{
+      headerShown:false
+    }}>
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="IMC" component={Imc} />
-    </Drawer.Navigator>
+  </Drawer.Navigator>
 
-  /* BottomTabs = () => {
+  bottomTab = () => {
+    return <BottomTab.Navigator
+    options={{
+      headerShown:false
+    }}>
+      <BottomTab.Screen name="Home" component={this.homeStack}/>
+      <BottomTab.Screen name="Novo" component={NewTrain} />
+      <BottomTab.Screen name="Perfil" component={Profile} />
+    </BottomTab.Navigator>
+  }
+
+  //botão bonito e animado. Tenho que arrumar isso
+  /* mBottomTabs = () => {
     return <MaterialBottomTabs.Navigator>
       <MaterialBottomTabs.Screen
         name="Home" component={Home} 
@@ -70,16 +107,8 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {this.createStack()}
+      {this.loginStack()}
     </NavigationContainer>
   );
 }
-
-/* export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
-} */
 
