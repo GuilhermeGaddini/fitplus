@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 import { NavigationContainer, DarkTheme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { Icon } from "react-native-vector-icons/MaterialCommunityIcons";
-import { Title } from 'react-native-paper';
+import { Title } from "react-native-paper";
 
 //Screens
 import Login from "./App/Screens/Login";
@@ -21,69 +21,85 @@ const MaterialBottomTabs = createMaterialBottomTabNavigator();
 const BottomTab = createBottomTabNavigator();
 
 export default function App() {
-
   //colocar um dark mode no app; falta um arquivo style que seja "claro"
   const MyTheme = {
     dark: false,
     colors: {
-      primary: 'white',
-      background: 'white',
-      card: '#65509f',
-      text: 'white',
-      border: 'green',
+      primary: "white",
+      background: "white",
+      card: "#65509f",
+      text: "white",
+      border: "green",
     },
-  }
+  };
 
-  homeStack = () =>
+  const loginStack = () => (
     <Stack.Navigator>
-      {/* <Stack.Screen name="loginStack" component={this.loginStack} 
-      options={{
-        headerShown:false
-      }} /> */}
-      <Stack.Screen 
-        name="Home" 
-        children={this.homeDrawer}/>
-  </Stack.Navigator>
-  
-  loginStack = () =>
-    <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} 
-      options={{
-        title: "LoginScreen"
-      }} />
-      <Stack.Screen name="SignUp" component={SignUp} 
-      options={{
-        title: "SignUpScreen"
-      }} />
-      <Stack.Screen name="Home" component={this.bottomTab}
-      options={{
-        headerShown:false
-      }} />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{
+          title: "LoginScreen",
+        }}
+      />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUp}
+        options={{
+          title: "SignUpScreen",
+          // headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Home"
+        component={bottomTab}
+        options={{
+          title: "",
+          headerShown: false,
+        }}
+      />
       {/* <Stack.Screen name="Login with Google" component={ApiGoogle} /> */}
-  </Stack.Navigator>
+    </Stack.Navigator>
+  );
 
-  homeDrawer = () =>
-    <Drawer.Navigator
-    options={{
-      headerShown:false
-    }}>
+  //Drawer Stacks - Removido
+  /* const homeStack = () => (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Home"
+        children={homeDrawer}
+      />
+    </Stack.Navigator>
+  );
+  const homeDrawer = () => (
+    <Drawer.Navigator>
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="IMC" component={Imc} />
-  </Drawer.Navigator>
+    </Drawer.Navigator>
+  ); */
 
-  bottomTab = () => {
-    return <BottomTab.Navigator
-    options={{
-      headerShown:false
-    }}>
-      <BottomTab.Screen name="Home" component={this.homeStack}/>
-      <BottomTab.Screen name="Novo" component={NewTrain} />
-      <BottomTab.Screen name="Perfil" component={Profile} />
-    </BottomTab.Navigator>
-  }
+  const bottomTab = () => {
+    return (
+      <BottomTab.Navigator>
+        {/* <BottomTab.Screen name="Home" component={homeStack} /> */}
+        <BottomTab.Screen name="Home" component={Home} />
+        <BottomTab.Screen name="Novo" component={NewTrain} />
+        <BottomTab.Screen name="Perfil" component={profile} />
+      </BottomTab.Navigator>
+    );
+  };
 
-  //botão bonito e animado. Tenho que arrumar isso
+  const profile = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Perfil" component={Profile} />
+        <Stack.Screen name="Imc" component={Imc} />
+      </Stack.Navigator>
+    );
+  };
+
+  //BottomTabs com melhor visual
   /* mBottomTabs = () => {
     return <MaterialBottomTabs.Navigator>
       <MaterialBottomTabs.Screen
@@ -105,10 +121,5 @@ export default function App() {
     </MaterialBottomTabs.Navigator>
   } */
 
-  return (
-    <NavigationContainer>
-      {this.loginStack()}
-    </NavigationContainer>
-  );
+  return <NavigationContainer>{loginStack()}</NavigationContainer>;
 }
-
